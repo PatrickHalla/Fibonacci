@@ -1,8 +1,5 @@
 language: java
 jdk:
   - oraclejdk8
-<<<<<<< HEAD
 script: ant compile.module.fibonacci.tests
-=======
-script: ant compile.module.fibonacci.tests
->>>>>>> origin/master
+
