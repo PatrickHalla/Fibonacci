@@ -1,2 +1,5 @@
 language: java
-script: ant /src/Halla/FibonacciFolgeTest
+jdk:
+ - oraclejdk8
+after_success:
+- bash <(curl -s https://codecov.io/bash)
