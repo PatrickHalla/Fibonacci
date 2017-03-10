@@ -1,4 +1,2 @@
 language: java
-install: junit test
-jdk:
-  - oraclejdk8
+script: ant FibonacciFolgeTest

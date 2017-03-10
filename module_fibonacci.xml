@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_fibonacci" default="compile.module.fibonacci">
+  <dirname property="module.fibonacci.basedir" file="${ant.file.module_fibonacci}"/>
+  
+  <property name="module.jdk.home.fibonacci" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.fibonacci" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.fibonacci" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.fibonacci" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="fibonacci.output.dir" value="${module.fibonacci.basedir}/out/production/Fibonacci"/>
+  <property name="fibonacci.testoutput.dir" value="${module.fibonacci.basedir}/out/test/Fibonacci"/>
+  
+  <path id="fibonacci.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="fibonacci.module.production.classpath">
+    <path refid="${module.jdk.classpath.fibonacci}"/>
+    <path refid="library.junit-4.12.classpath"/>
+    <pathelement location="${idea.home}/lib/groovy-all-2.4.6.jar"/>
+  </path>
+  
+  <path id="fibonacci.runtime.production.module.classpath">
+    <pathelement location="${fibonacci.output.dir}"/>
+    <path refid="library.junit-4.12.classpath"/>
+    <pathelement location="${idea.home}/lib/groovy-all-2.4.6.jar"/>
+  </path>
+  
+  <path id="fibonacci.module.classpath">
+    <path refid="${module.jdk.classpath.fibonacci}"/>
+    <pathelement location="${fibonacci.output.dir}"/>
+    <path refid="library.junit-4.12.classpath"/>
+    <pathelement location="${idea.home}/lib/groovy-all-2.4.6.jar"/>
+  </path>
+  
+  <path id="fibonacci.runtime.module.classpath">
+    <pathelement location="${fibonacci.testoutput.dir}"/>
+    <pathelement location="${fibonacci.output.dir}"/>
+    <path refid="library.junit-4.12.classpath"/>
+    <pathelement location="${idea.home}/lib/groovy-all-2.4.6.jar"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.fibonacci">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.fibonacci">
+    <patternset refid="excluded.from.module.fibonacci"/>
+  </patternset>
+  
+  <path id="fibonacci.module.sourcepath">
+    <dirset dir="${module.fibonacci.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.fibonacci" depends="compile.module.fibonacci.production,compile.module.fibonacci.tests" description="Compile module Fibonacci"/>
+  
+  <target name="compile.module.fibonacci.production" depends="register.custom.compilers" description="Compile module Fibonacci; production classes">
+    <mkdir dir="${fibonacci.output.dir}"/>
+    <javac2 destdir="${fibonacci.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.fibonacci}/javac">
+      <compilerarg line="${compiler.args.fibonacci}"/>
+      <bootclasspath refid="fibonacci.module.bootclasspath"/>
+      <classpath refid="fibonacci.module.production.classpath"/>
+      <src refid="fibonacci.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.fibonacci"/>
+    </javac2>
+    
+    <copy todir="${fibonacci.output.dir}">
+      <fileset dir="${module.fibonacci.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.fibonacci.tests" depends="register.custom.compilers,compile.module.fibonacci.production" description="compile module Fibonacci; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.fibonacci" description="cleanup module">
+    <delete dir="${fibonacci.output.dir}"/>
+    <delete dir="${fibonacci.testoutput.dir}"/>
+  </target>
+</project>
