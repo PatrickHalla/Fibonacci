@@ -1,2 +1,2 @@
 language: java
-script: ant -fibonacci
+script: ant fibonacci module_fibonacci
