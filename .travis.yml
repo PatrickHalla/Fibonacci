@@ -1,4 +1,4 @@
 language: java
-install: ant deps
+install: junit test
 jdk:
   - oraclejdk8
