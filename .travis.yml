@@ -1,4 +1,4 @@
 language: java
 jdk:
   - oraclejdk8
-script: ant compile.module.fibonacci.tests
+script: ant all
